@@ -1,0 +1,30 @@
+pipeline {
+    agent { docker { image 'python:3.9' } }  // Use a Python container
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/immayankvrm/jenkins.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'pytest test_hello.py'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+                sh 'python hello.py'  // Example deployment
+            }
+        }
+    }
+}
